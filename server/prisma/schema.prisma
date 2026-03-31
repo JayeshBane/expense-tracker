@@ -11,3 +11,33 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(50)
+  color    String?   @db.VarChar(7)
+  expenses Expense[]
+}
+
+model PaymentMethod {
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(50)
+  expenses Expense[]
+}
+
+model Expense {
+  id              Int            @id @default(autoincrement())
+  amount          Decimal        @db.Decimal(10, 2)
+  expenseDate     DateTime       @map("expense_date") @db.Date
+  notes           String?
+  categoryId      Int?           @map("category_id")
+  paymentMethodId Int?           @map("payment_method_id")
+  category        Category?      @relation(fields: [paymentMethodId], references: [id], map: "expenses_category_id_fkey")
+  paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id], map: "expenses_payment_method_id_fkey")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @default(now()) @map("updated_at")
+
+  @@index([expenseDate])
+  @@index([categoryId])
+  @@map("expenses")
+}
