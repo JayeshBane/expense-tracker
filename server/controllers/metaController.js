@@ -89,9 +89,93 @@ const deleteCategory = async (req, res) => {
   }
 };
 
+// GET /api/payment-methods
+const getPaymentMethods = async (req, res) => {
+  try {
+    const methods = await prisma.paymentMethod.findMany({
+      orderBy: { name: "asc" },
+    });
+    res.json(methods);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// POST /api/payment-methods
+const createPaymentMethod = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: "name is required" });
+    }
+
+    const existing = await prisma.paymentMethod.findFirst({
+      where: { name: { equals: name.trim(), mode: "insensitive" } },
+    });
+    if (existing) {
+      return res.status(409).json({ error: "Payment method already exists" });
+    }
+
+    const method = await prisma.paymentMethod.create({
+      data: { name: name.trim() },
+    });
+
+    res.status(201).json(method);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// PUT /api/payment-methods/:id
+const updatePaymentMethod = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { name } = req.body;
+
+    const method = await prisma.paymentMethod.update({
+      where: { id },
+      data: { ...(name && { name: name.trim() }) },
+    });
+
+    res.json(method);
+  } catch (err) {
+    if (err.code === "P2025") {
+      return res.status(404).json({ error: "Payment method not found" });
+    }
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// DELETE /api/payment-methods/:id
+const deletePaymentMethod = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    // Null out paymentMethodId on related expenses before deleting
+    await prisma.expense.updateMany({
+      where: { paymentMethodId: id },
+      data: { paymentMethodId: null },
+    });
+
+    await prisma.paymentMethod.delete({ where: { id } });
+
+    res.status(204).send();
+  } catch (err) {
+    if (err.code === "P2025") {
+      return res.status(404).json({ error: "Payment method not found" });
+    }
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   getCategories,
   createCategory,
   updateCategory,
   deleteCategory,
+  getPaymentMethods,
+  createPaymentMethod,
+  updatePaymentMethod,
+  deletePaymentMethod,
 };
