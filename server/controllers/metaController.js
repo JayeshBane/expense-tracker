@@ -13,6 +13,7 @@ const getCategories = async (req, res) => {
   }
 };
 
+// POST /api/categories
 const createCategory = async (req, res) => {
   try {
     const { name, color } = req.body;
