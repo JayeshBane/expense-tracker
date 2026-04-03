@@ -180,4 +180,8 @@ const exportExpenses = async (req, res) => {
 
 module.exports = {
   getExpenses,
+  createExpense,
+  updateExpense,
+  deleteExpense,
+  exportExpenses,
 };
