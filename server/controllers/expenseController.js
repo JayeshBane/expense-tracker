@@ -104,6 +104,23 @@ const updateExpense = async (req, res) => {
   }
 };
 
+// DELETE /api/expenses/:id
+
+const deleteExpense = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    await prisma.expense.delete({ where: { id } });
+
+    res.status(204).send();
+  } catch (err) {
+    if (err.code === "P2025") {
+      return res.status(404).json({ error: "Expense not found" });
+    }
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   getExpenses,
 };
