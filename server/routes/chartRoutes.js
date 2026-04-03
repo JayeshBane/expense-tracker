@@ -1,11 +1,8 @@
 const express = require("express");
+const { getCharts } = require("../controllers/chartController");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send({
-    text: "Charts Route",
-  });
-});
+router.get("/", getCharts);
 
 module.exports = router;

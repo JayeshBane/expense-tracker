@@ -1,11 +1,8 @@
 const express = require("express");
+const { getMeta } = require("../controllers/metaController");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send({
-    text: "Metadata Route",
-  });
-});
+router.get("/", getMeta);
 
 module.exports = router;
