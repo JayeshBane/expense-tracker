@@ -1,8 +1,14 @@
 const express = require("express");
-const { getCharts } = require("../controllers/chartController");
+const {
+  getBarData,
+  getLineData,
+  getPieData,
+} = require("../controllers/chartController");
 
 const router = express.Router();
 
-router.get("/", getCharts);
+router.get("/bar", getBarData);
+router.get("/line", getLineData);
+router.get("/pie", getPieData);
 
 module.exports = router;
