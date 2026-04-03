@@ -34,7 +34,40 @@ const getExpenses = async (req, res) => {
 };
 
 // POST /api/expenses
-const createExpense = async (req, res) => {};
+const createExpense = async (req, res) => {
+  try {
+    const { amount, expenseDate, categoryId, paymentMethodId, notes } =
+      req.body;
+
+    if (!amount || !expenseDate) {
+      return res
+        .status(400)
+        .json({ error: "amount and expenseDate are required" });
+    }
+
+    const expense = await prisma.expense.create({
+      data: {
+        amount: parseFloat(amount),
+        expenseDate: new Date(expenseDate),
+        notes: notes ?? null,
+        ...(categoryId && {
+          category: { connect: { id: parseInt(categoryId) } },
+        }),
+        ...(paymentMethodId && {
+          paymentMethod: { connect: { id: parseInt(paymentMethodId) } },
+        }),
+      },
+      include: {
+        category: true,
+        paymentMethod: true,
+      },
+    });
+
+    res.status(201).json(expense);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 module.exports = {
   getExpenses,
