@@ -69,6 +69,41 @@ const createExpense = async (req, res) => {
   }
 };
 
+// PUT /api/expenses/:id
+const updateExpense = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { amount, expenseDate, categoryId, paymentMethodId, notes } =
+      req.body;
+
+    const expense = await prisma.expense.update({
+      where: { id },
+      data: {
+        ...(amount && { amount: parseFloat(amount) }),
+        ...(expenseDate && { expenseDate: new Date(expenseDate) }),
+        ...(notes !== undefined && { notes }),
+        ...(categoryId && {
+          category: { connect: { id: parseInt(categoryId) } },
+        }),
+        ...(paymentMethodId && {
+          paymentMethod: { connect: { id: parseInt(paymentMethodId) } },
+        }),
+      },
+      include: {
+        category: true,
+        paymentMethod: true,
+      },
+    });
+
+    res.json(expense);
+  } catch (err) {
+    if (err.code === "P2025") {
+      return res.status(404).json({ error: "Expense not found" });
+    }
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   getExpenses,
 };
