@@ -121,6 +121,63 @@ const deleteExpense = async (req, res) => {
   }
 };
 
+// GET /api/expenses/export?format=csv&start=&end=&categoryId=&paymentMethodId=
+const exportExpenses = async (req, res) => {
+  try {
+    const {
+      format = "csv",
+      start,
+      end,
+      categoryId,
+      paymentMethodId,
+    } = req.query;
+
+    const expenses = await prisma.expense.findMany({
+      where: {
+        ...(start || end
+          ? {
+              expenseDate: {
+                ...(start && { gte: new Date(start) }),
+                ...(end && { lte: new Date(end) }),
+              },
+            }
+          : {}),
+        ...(categoryId && { categoryId: parseInt(categoryId) }),
+        ...(paymentMethodId && { paymentMethodId: parseInt(paymentMethodId) }),
+      },
+      include: {
+        category: true,
+        paymentMethod: true,
+      },
+      orderBy: { expenseDate: "desc" },
+    });
+
+    // Flatten for export
+    const rows = expenses.map((e) => ({
+      date: e.expenseDate.toISOString().slice(0, 10),
+      amount: parseFloat(e.amount).toFixed(2),
+      category: e.category?.name ?? "Uncategorised",
+      payment_method: e.paymentMethod?.name ?? "Unknown",
+      notes: e.notes ?? "",
+    }));
+
+    if (format === "csv") {
+      const { Parser } = require("json2csv");
+      const parser = new Parser({
+        fields: ["date", "amount", "category", "payment_method", "notes"],
+      });
+      const csv = parser.parse(rows);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader("Content-Disposition", "attachment; filename=expenses.csv");
+      return res.send(csv);
+    }
+
+    res.status(400).json({ error: "Invalid format. Only csv is supported." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   getExpenses,
 };
