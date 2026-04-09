@@ -34,6 +34,8 @@ export const useMetaStore = create(
           createError: err.response?.data?.error ?? "Failed",
           isCreating: false,
         });
+
+        return null;
       }
     },
 
@@ -53,6 +55,8 @@ export const useMetaStore = create(
           createError: err.response?.data?.error ?? "Failed",
           isCreating: false,
         });
+
+        return null;
       }
     },
   })),
