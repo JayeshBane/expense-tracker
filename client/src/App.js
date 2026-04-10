@@ -1,25 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { useExpenseStore } from "./stores/useExpenseStore";
+import { useMetaStore } from "./stores/useMetaStore";
+
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const fetchExpenses = useExpenseStore((s) => s.fetchExpenses);
+  const fetchMeta = useMetaStore((s) => s.fetchMeta);
+  const error = useExpenseStore((s) => s.error);
+  const clearError = useExpenseStore((s) => s.clearError);
+
+  return <div className="App">Expense Tracker</div>;
 }
 
 export default App;
