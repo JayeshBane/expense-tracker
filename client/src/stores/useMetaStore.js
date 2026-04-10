@@ -29,6 +29,8 @@ export const useMetaStore = create(
           ),
           isCreating: false,
         }));
+
+        return created;
       } catch (err) {
         set({
           createError: err.response?.data?.error ?? "Failed",
@@ -50,6 +52,8 @@ export const useMetaStore = create(
           ),
           isCreating: false,
         }));
+
+        return created;
       } catch (err) {
         set({
           createError: err.response?.data?.error ?? "Failed",
