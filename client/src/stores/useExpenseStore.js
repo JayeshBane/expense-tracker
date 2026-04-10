@@ -15,101 +15,131 @@ const groupByDate = (expenses) => {
 };
 
 export const useExpenseStore = create(
-  devtools((set, get) => ({
-    expenses: [],
-    expensesByDate: {},
-    currentMonth: new Date(),
-    filters: {
-      start: null,
-      end: null,
-      categoryId: null,
-      paymentMethodId: null,
-    },
-    isLoading: false,
-    error: null,
+  devtools(
+    (set, get) => ({
+      expenses: [],
+      expensesByDate: {},
+      currentMonth: new Date(),
+      filters: {
+        start: null,
+        end: null,
+        categoryId: null,
+        paymentMethodId: null,
+      },
+      isLoading: false,
+      error: null,
 
-    setCurrentMonth: (date) => set({ currentMonth: date }),
+      setCurrentMonth: (date) => set({ currentMonth: date }),
 
-    setFilter: (key, value) =>
-      set((s) => ({ filters: { ...s.filters, [key]: value } })),
+      setFilter: (key, value) =>
+        set((s) => ({ filters: { ...s.filters, [key]: value } })),
 
-    clearFilters: () =>
-      set({
-        filters: {
-          start: null,
-          end: null,
-          categoryId: null,
-          paymentMethodId: null,
-        },
-      }),
-
-    fetchExpenses: async (overrides = {}) => {
-      set({ isLoading: true, error: null });
-
-      try {
-        const params = { ...get().filters, ...overrides };
-        const expenses = await api.getExpenses(params);
-
+      clearFilters: () =>
         set({
-          expenses,
-          expensesByDate: groupByDate(expenses),
-          isLoading: false,
-        });
-      } catch (err) {
-        set({ error: err.message, isLoading: false });
-      }
-    },
+          filters: {
+            start: null,
+            end: null,
+            categoryId: null,
+            paymentMethodId: null,
+          },
+        }),
 
-    createExpense: async (data) => {
-      try {
-        const expense = await api.createExpense(data);
+      fetchExpenses: async (overrides = {}) => {
+        set({ isLoading: true, error: null });
 
-        set((s) => {
-          const key = expense.expenseDate.slice(0, 10);
+        try {
+          const params = { ...get().filters, ...overrides };
+          const expenses = await api.getExpenses(params);
 
-          return {
-            expenses: [expense, ...s.expenses],
-            expensesByDate: {
-              ...s.expensesByDate,
-              [key]: [...(s.expensesByDate[key] ?? []), expense],
-            },
-          };
-        });
+          set({
+            expenses,
+            expensesByDate: groupByDate(expenses),
+            isLoading: false,
+          });
+        } catch (err) {
+          set({ error: err.message, isLoading: false });
+        }
+      },
 
-        return expense;
-      } catch (err) {
-        set({ error: err.message });
-        return null;
-      }
-    },
+      createExpense: async (data) => {
+        try {
+          const expense = await api.createExpense(data);
 
-    updateExpense: async (id, data) => {
-      try {
-        const updated = await api.updateExpense(id, data);
+          set((s) => {
+            const key = expense.expenseDate.slice(0, 10);
 
-        set((s) => {
-          const oldKey = s.expenses
-            .find((e) => e.id === id)
-            .expenseDate.slice(0, 10);
+            return {
+              expenses: [expense, ...s.expenses],
+              expensesByDate: {
+                ...s.expensesByDate,
+                [key]: [...(s.expensesByDate[key] ?? []), expense],
+              },
+            };
+          });
 
-          const newKey = updated.expenseDate.slice(0, 10);
+          return expense;
+        } catch (err) {
+          set({ error: err.message });
+          return null;
+        }
+      },
 
-          const ebd = { ...s.expensesByDate };
+      updateExpense: async (id, data) => {
+        try {
+          const updated = await api.updateExpense(id, data);
 
-          if (oldKey) {
-            ebd[oldKey] = (ebd[oldKey] ?? []).filter((e) => e.id !== id);
-          }
+          set((s) => {
+            const oldKey = s.expenses
+              .find((e) => e.id === id)
+              .expenseDate.slice(0, 10);
 
-          ebd[newKey] = [...(ebd[newKey] ?? []), updated];
+            const newKey = updated.expenseDate.slice(0, 10);
 
-          return {
-            expenses: s.expenses.map((e) => (e.id === id ? updated : e)),
-            expensesByDate: ebd,
-          };
-        });
-      } catch (err) {
-        set({ error: err.message });
-      }
-    },
-  })),
+            const ebd = { ...s.expensesByDate };
+
+            if (oldKey) {
+              ebd[oldKey] = (ebd[oldKey] ?? []).filter((e) => e.id !== id);
+            }
+
+            ebd[newKey] = [...(ebd[newKey] ?? []), updated];
+
+            return {
+              expenses: s.expenses.map((e) => (e.id === id ? updated : e)),
+              expensesByDate: ebd,
+            };
+          });
+        } catch (err) {
+          set({ error: err.message });
+        }
+      },
+
+      deleteExpense: async (id) => {
+        try {
+          await api.deleteExpense(id);
+
+          set((s) => {
+            const key = s.expenses
+              .find((e) => e.id === id)
+              ?.expenseDate.slice(0, 10);
+
+            const ebd = { ...s.expensesByDate };
+
+            if (key) {
+              ebd[key] = (ebd[key] ?? []).filter((e) => e.id !== id);
+            }
+
+            return {
+              expenses: s.expenses.filter((e) => e.id !== id),
+              expensesByDate: ebd,
+            };
+          });
+        } catch (err) {
+          set({ error: err.message });
+        }
+      },
+
+      clearError: () => set({ error: null }),
+    }),
+    { name: "ExpenseStore" },
+  ),
 );
