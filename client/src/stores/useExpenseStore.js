@@ -82,5 +82,34 @@ export const useExpenseStore = create(
         return null;
       }
     },
+
+    updateExpense: async (id, data) => {
+      try {
+        const updated = await api.updateExpense(id, data);
+
+        set((s) => {
+          const oldKey = s.expenses
+            .find((e) => e.id === id)
+            .expenseDate.slice(0, 10);
+
+          const newKey = updated.expenseDate.slice(0, 10);
+
+          const ebd = { ...s.expensesByDate };
+
+          if (oldKey) {
+            ebd[oldKey] = (ebd[oldKey] ?? []).filter((e) => e.id !== id);
+          }
+
+          ebd[newKey] = [...(ebd[newKey] ?? []), updated];
+
+          return {
+            expenses: s.expenses.map((e) => (e.id === id ? updated : e)),
+            expensesByDate: ebd,
+          };
+        });
+      } catch (err) {
+        set({ error: err.message });
+      }
+    },
   })),
 );
