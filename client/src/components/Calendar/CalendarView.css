@@ -1,0 +1,178 @@
+.cal-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Summary bar ─────────────────────── */
+.summary-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.summary-card {
+  background: #ffffff;
+  border: 1px solid #e4e0d8;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.summary-label {
+  font-size: 11px;
+  color: #a8a49e;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.summary-value {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: #1a1916;
+  line-height: 1.2;
+}
+
+.summary-value--accent {
+  color: #e04a4a;
+}
+
+.summary-sub {
+  font-size: 11px;
+  color: #a8a49e;
+  margin-top: 3px;
+}
+
+/* ── Navigation ──────────────────────── */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cal-month-label {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: #1a1916;
+}
+
+.cal-year {
+  color: #a8a49e;
+  font-weight: 400;
+  margin-left: 7px;
+  font-size: 18px;
+}
+
+.cal-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cal-loading {
+  font-size: 12px;
+  color: #a8a49e;
+  font-style: italic;
+}
+
+.nav-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.nav-btn {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #d4cfc6;
+  background: #ffffff;
+  font-size: 14px;
+  font-family: inherit;
+  color: #6b6760;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.nav-btn:hover {
+  background: #1a1916;
+  color: #ffffff;
+  border-color: #1a1916;
+}
+
+/* ── Grid ────────────────────────────── */
+.cal-grid {
+  background: #ffffff;
+  border: 1px solid #e4e0d8;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #e4e0d8;
+}
+
+.cal-weekday {
+  padding: 10px 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 500;
+  color: #a8a49e;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.cal-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+/* ── Legend ──────────────────────────── */
+.cat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 2px 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #6b6760;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ──────────────────────── */
+@media (max-width: 768px) {
+  .summary-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .cal-month-label {
+    font-size: 16px;
+  }
+
+  .nav-btn {
+    padding: 0 9px;
+    font-size: 13px;
+  }
+}
