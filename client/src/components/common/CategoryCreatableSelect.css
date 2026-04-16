@@ -1,0 +1,121 @@
+.cat-cs-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Color picker panel ──────────────── */
+.cat-create-panel {
+  margin-top: 6px;
+  padding: 12px 14px;
+  border: 1px solid #e4e0d8;
+  border-radius: 10px;
+  background: #faf9f6;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: panel-in 0.15s ease;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cat-create-label {
+  font-size: 12.5px;
+  color: #6b6760;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.cat-create-label strong {
+  color: #1a1916;
+  font-weight: 500;
+}
+
+/* ── Preview chip ────────────────────── */
+.cat-preview {
+  display: flex;
+}
+
+.cat-preview-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.cat-preview-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+/* ── Error ───────────────────────────── */
+.cat-create-error {
+  font-size: 12px;
+  color: #a01c1c;
+  background: #fde9e9;
+  padding: 6px 9px;
+  border-radius: 6px;
+  margin: 0;
+}
+
+/* ── Actions ─────────────────────────── */
+.cat-create-actions {
+  display: flex;
+  gap: 7px;
+}
+
+.cat-confirm-btn {
+  flex: 1;
+  padding: 7px 14px;
+  border-radius: 7px;
+  background: #1a1916;
+  color: #fff;
+  border: none;
+  font-size: 12.5px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.cat-confirm-btn:hover {
+  opacity: 0.85;
+}
+.cat-confirm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cat-cancel-btn {
+  padding: 7px 14px;
+  border-radius: 7px;
+  background: transparent;
+  color: #6b6760;
+  border: 1px solid #d4cfc6;
+  font-size: 12.5px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cat-cancel-btn:hover {
+  background: #f0ede6;
+}
