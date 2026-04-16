@@ -1,0 +1,198 @@
+.cs-container {
+  position: relative;
+  width: 100%;
+  font-size: 13.5px;
+}
+
+/* ── Control ─────────────────────────── */
+.cs-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 38px;
+  padding: 6px 10px;
+  border: 1px solid #d4cfc6;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  user-select: none;
+}
+
+.cs-control:hover {
+  border-color: #a8a49e;
+}
+
+.cs-control--open {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  cursor: text;
+}
+
+/* ── Input ───────────────────────────── */
+.cs-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #1a1916;
+  min-width: 0;
+  padding: 0;
+}
+
+.cs-input::placeholder {
+  color: #a8a49e;
+}
+
+.cs-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Selected value display ──────────── */
+.cs-value {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+  font-size: 13.5px;
+  color: #1a1916;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-value-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Indicators (clear + chevron) ────── */
+.cs-indicators {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.cs-clear {
+  background: none;
+  border: none;
+  font-size: 17px;
+  line-height: 1;
+  color: #a8a49e;
+  cursor: pointer;
+  padding: 0 3px;
+  border-radius: 4px;
+  transition: color 0.1s;
+}
+
+.cs-clear:hover {
+  color: #1a1916;
+}
+
+.cs-chevron {
+  font-size: 15px;
+  color: #a8a49e;
+  line-height: 1;
+  transition: transform 0.15s;
+  display: inline-block;
+}
+
+.cs-chevron--open {
+  transform: rotate(90deg);
+}
+
+/* ── Dropdown ────────────────────────── */
+.cs-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e4e0d8;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 100;
+  list-style: none;
+  padding: 4px;
+  margin: 0;
+}
+
+.cs-empty {
+  padding: 10px 12px;
+  font-size: 12.5px;
+  color: #a8a49e;
+  text-align: center;
+}
+
+/* ── Options ─────────────────────────── */
+.cs-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #1a1916;
+  transition: background 0.1s;
+}
+
+.cs-option--highlighted {
+  background: #f5f3ef;
+}
+
+.cs-option--selected {
+  font-weight: 500;
+}
+
+.cs-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cs-option-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-check {
+  font-size: 11px;
+  color: #6366f1;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ── Create option ───────────────────── */
+.cs-option--create {
+  color: #6366f1;
+  font-style: italic;
+}
+
+.cs-create-plus {
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.cs-creating {
+  color: #a8a49e;
+  font-style: italic;
+}
