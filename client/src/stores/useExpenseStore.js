@@ -3,7 +3,7 @@ import { devtools } from "zustand/middleware";
 import * as api from "../services/api";
 
 const groupByDate = (expenses) => {
-  expenses.reduce((acc, exp) => {
+  return expenses.reduce((acc, exp) => {
     const key = exp.expenseDate.slice(0, 10);
 
     if (!acc[key]) acc[key] = [];
