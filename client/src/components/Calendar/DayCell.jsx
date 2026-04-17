@@ -20,7 +20,7 @@ export default function DayCell({ date, expenses, isCurrentMonth, isToday }) {
   };
 
   const handleCellClick = () => {
-    if (!hasExpenses || !isCurrentMonth) return;
+    if (!isCurrentMonth) return;
     setSelectedExp(null);
     setModalOpen(true);
   };
