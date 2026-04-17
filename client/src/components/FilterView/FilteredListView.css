@@ -1,0 +1,345 @@
+.list-view {
+  background: #ffffff;
+  border: 1px solid #e4e0d8;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* ── Header ──────────────────────────── */
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0ede6;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.list-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.list-collapse-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid #e4e0d8;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a8a49e;
+  transition: all 0.12s;
+  flex-shrink: 0;
+}
+
+.list-collapse-btn:hover {
+  background: #f5f3ef;
+  color: #1a1916;
+}
+
+.collapse-chevron {
+  font-size: 14px;
+  display: inline-block;
+  transition: transform 0.15s;
+  transform: rotate(0deg);
+}
+
+.collapse-chevron--open {
+  transform: rotate(90deg);
+}
+
+.list-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1916;
+  letter-spacing: -0.2px;
+}
+
+.list-subtitle {
+  font-size: 12px;
+  color: #a8a49e;
+  margin-top: 1px;
+}
+
+.list-total {
+  font-weight: 500;
+  color: #6b6760;
+}
+
+.list-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Sort select ─────────────────────── */
+.list-sort-select {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #d4cfc6;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: #6b6760;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  transition: border-color 0.15s;
+}
+
+.list-sort-select:focus {
+  border-color: #6366f1;
+}
+
+/* ── Category breakdown ──────────────── */
+.list-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0ede6;
+}
+
+.breakdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breakdown-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.breakdown-name {
+  font-size: 12px;
+  color: #6b6760;
+  width: 90px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breakdown-bar-wrap {
+  flex: 1;
+  height: 5px;
+  background: #f0ede6;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.breakdown-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  opacity: 0.75;
+}
+
+.breakdown-amt {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1a1916;
+  font-family: monospace;
+  text-align: right;
+  flex-shrink: 0;
+  min-width: 60px;
+}
+
+/* ── Table wrapper ───────────────────── */
+.list-table-wrap {
+  overflow-x: auto;
+}
+
+.list-loading {
+  padding: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: #a8a49e;
+}
+
+/* ── Table ───────────────────────────── */
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  table-layout: fixed;
+}
+
+.list-table thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  color: #a8a49e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-bottom: 1px solid #f0ede6;
+  background: #faf9f6;
+  white-space: nowrap;
+}
+
+/* ── Column widths ───────────────────── */
+.list-table .col-date {
+  width: 110px;
+}
+.list-table .col-category {
+  width: 140px;
+}
+.list-table .col-payment {
+  width: 130px;
+}
+.list-table .col-notes {
+  width: auto;
+}
+.list-table .col-amount {
+  width: 90px;
+  text-align: right;
+}
+.list-table .col-actions {
+  width: 70px;
+  text-align: right;
+}
+
+/* ── Table rows ──────────────────────── */
+.table-row td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f7f6f2;
+  color: #1a1916;
+  vertical-align: middle;
+}
+
+.table-row:last-child td {
+  border-bottom: none;
+}
+
+.table-row:hover td {
+  background: #faf9f6;
+}
+
+.table-row--deleting {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── Column specific ─────────────────── */
+.col-date {
+  color: #6b6760;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+/* Category pill */
+.table-cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--cat-color) 12%, white);
+  color: color-mix(in srgb, var(--cat-color) 75%, #1a1916);
+}
+
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+  .table-cat-pill {
+    background: #f0ede6;
+    color: #6b6760;
+  }
+}
+
+.table-cat-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cat-color);
+  flex-shrink: 0;
+}
+
+/* Notes */
+.notes-text {
+  color: #a8a49e;
+  font-size: 12.5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Amount */
+.col-amount {
+  font-family: monospace;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* ── Table footer total ──────────────── */
+.table-total-row td {
+  padding: 10px 14px;
+  border-top: 2px solid #e4e0d8;
+  background: #faf9f6;
+}
+
+.total-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #a8a49e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.total-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1916;
+  font-family: monospace;
+  letter-spacing: -0.3px;
+}
+
+/* ── Delete button ───────────────────── */
+.table-delete-btn {
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  background: #fff;
+  color: #e04a4a;
+  border: 1px solid #f09595;
+  transition: all 0.12s;
+}
+
+.table-delete-btn:hover:not(:disabled) {
+  background: #fde9e9;
+}
+
+.table-delete-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Responsive ──────────────────────── */
+@media (max-width: 640px) {
+  .list-table .col-payment,
+  .list-table .col-notes {
+    display: none;
+  }
+
+  .list-header {
+    padding: 12px 14px;
+  }
+
+  .list-breakdown {
+    padding: 12px 14px;
+  }
+}
