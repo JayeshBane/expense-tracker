@@ -17,12 +17,16 @@ model Category {
   name     String    @db.VarChar(50)
   color    String?   @db.VarChar(7)
   expenses Expense[]
+
+  @@map("categories")
 }
 
 model PaymentMethod {
   id       Int       @id @default(autoincrement())
   name     String    @db.VarChar(50)
   expenses Expense[]
+
+  @@map("payment_methods")
 }
 
 model Expense {
