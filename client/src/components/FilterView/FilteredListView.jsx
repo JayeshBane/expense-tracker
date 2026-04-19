@@ -181,9 +181,10 @@ function ExpenseTableRow({ expense, isDeleting, onDelete }) {
   const color = expense.category?.color ?? "#a8a49e";
   const amt = parseFloat(expense.amount);
 
-  // Format date cleanly — add T00:00:00 to avoid timezone shifts
+  // Format date cleanly in MMM DD, YYYY format
+
   const dateStr = expense.expenseDate
-    ? new Date(expense.expenseDate + "T00:00:00").toLocaleDateString("en-US", {
+    ? new Date(expense.expenseDate).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric",
