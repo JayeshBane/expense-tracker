@@ -20,7 +20,14 @@ export default function ChartSection() {
   // Re-fetch whenever any control changes
   useEffect(() => {
     fetchAllCharts();
-  }, [rangeMode, selectedMonth, customStart, customEnd, lineMonths]);
+  }, [
+    rangeMode,
+    selectedMonth,
+    customStart,
+    customEnd,
+    lineMonths,
+    fetchAllCharts,
+  ]);
 
   return (
     <section className="chart-section">
