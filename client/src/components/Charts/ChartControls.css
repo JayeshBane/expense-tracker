@@ -1,0 +1,180 @@
+.chart-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0ede6;
+}
+
+/* ── Sides ───────────────────────────── */
+.controls-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Mode toggle ─────────────────────── */
+.toggle-group {
+  display: flex;
+  border: 1px solid #d4cfc6;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.toggle-btn {
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-family: inherit;
+  font-weight: 500;
+  background: #fff;
+  color: #6b6760;
+  border: none;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.toggle-btn + .toggle-btn {
+  border-left: 1px solid #d4cfc6;
+}
+
+.toggle-btn--active {
+  background: #1a1916;
+  color: #fff;
+}
+
+.toggle-btn:hover:not(.toggle-btn--active) {
+  background: #f5f3ef;
+}
+
+/* ── Month navigator ─────────────────── */
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.month-nav-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid #d4cfc6;
+  background: #fff;
+  font-size: 16px;
+  color: #6b6760;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s;
+  flex-shrink: 0;
+}
+
+.month-nav-btn:hover {
+  background: #1a1916;
+  color: #fff;
+  border-color: #1a1916;
+}
+
+.month-nav-label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #1a1916;
+  min-width: 130px;
+  text-align: center;
+}
+
+/* ── Custom date range ───────────────── */
+.custom-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.range-input {
+  height: 32px;
+  padding: 0 9px;
+  border: 1px solid #d4cfc6;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: #1a1916;
+  background: #fff;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.range-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.range-sep {
+  font-size: 13px;
+  color: #a8a49e;
+}
+
+/* ── Line chart depth ────────────────── */
+.depth-label {
+  font-size: 11.5px;
+  color: #a8a49e;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.depth-group {
+  display: flex;
+  border: 1px solid #d4cfc6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.depth-btn {
+  padding: 5px 11px;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 500;
+  background: #fff;
+  color: #6b6760;
+  border: none;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.depth-btn + .depth-btn {
+  border-left: 1px solid #d4cfc6;
+}
+
+.depth-btn--active {
+  background: #1a1916;
+  color: #fff;
+}
+
+.depth-btn:hover:not(.depth-btn--active) {
+  background: #f5f3ef;
+}
+
+/* ── Responsive ──────────────────────── */
+@media (max-width: 640px) {
+  .chart-controls {
+    padding: 12px 14px;
+  }
+
+  .controls-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

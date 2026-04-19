@@ -1,0 +1,166 @@
+/* Shared styles across all three chart components */
+
+/* ── Empty state ─────────────────────── */
+.chart-empty {
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #a8a49e;
+}
+
+/* ── Shared tooltip ──────────────────── */
+.chart-tooltip {
+  background: #1a1916;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 100px;
+}
+
+.tooltip-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 3px;
+}
+
+.tooltip-value {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: monospace;
+  letter-spacing: -0.3px;
+}
+
+.tooltip-pct {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 2px;
+}
+
+/* ── Line chart trend summary ────────── */
+.line-summary {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.line-chip {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 10px;
+  border-radius: 8px;
+  min-width: 0;
+}
+
+.line-chip--avg {
+  background: #f0ede6;
+}
+.line-chip--high {
+  background: #fde9e9;
+}
+.line-chip--low {
+  background: #e9f9f0;
+}
+
+.line-chip-label {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #a8a49e;
+  margin-bottom: 2px;
+}
+
+.line-chip--avg .line-chip-value {
+  color: #6b6760;
+}
+.line-chip--high .line-chip-value {
+  color: #a01c1c;
+}
+.line-chip--low .line-chip-value {
+  color: #1c6640;
+}
+
+.line-chip-value {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Pie chart ───────────────────────── */
+.pie-wrapper {
+  position: relative;
+}
+
+.pie-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.pie-center-label {
+  font-size: 10.5px;
+  color: #a8a49e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 500;
+}
+
+.pie-center-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1916;
+  font-family: monospace;
+  letter-spacing: -0.4px;
+  margin-top: 2px;
+}
+
+/* ── Pie legend ──────────────────────── */
+.pie-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.pie-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+}
+
+.pie-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pie-legend-name {
+  flex: 1;
+  color: #6b6760;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pie-legend-amt {
+  font-family: monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #1a1916;
+  flex-shrink: 0;
+}
