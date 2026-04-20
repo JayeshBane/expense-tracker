@@ -52,6 +52,36 @@ export const getPieChartData = (s, e) => {
     .then((r) => r.data);
 };
 
-export const exportExpenses = (f, fmt) => {
-  window.location.href = `/api/expenses/export?${new URLSearchParams({ format: fmt, ...f })}`;
+export const exportExpenses = async (filters, format) => {
+  try {
+    const params = new URLSearchParams(
+      Object.fromEntries(
+        Object.entries({ ...filters, format }).filter(([, v]) => v != null),
+      ),
+    );
+
+    const response = await client.get(`/expenses/export?${params}`, {
+      responseType: "blob",
+    });
+
+    // Build a filename from the current date
+    const date = new Date().toISOString().slice(0, 10);
+    const ext = format === "excel" ? "xlsx" : "csv";
+    const filename = `expenses-${date}.${ext}`;
+
+    // Create a temporary anchor and trigger the download
+    const url = URL.createObjectURL(response.data);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    return { ok: true };
+  } catch (err) {
+    const message = err.response?.data?.error ?? "Export failed";
+    return { ok: false, error: message };
+  }
 };
