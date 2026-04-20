@@ -172,7 +172,44 @@ const exportExpenses = async (req, res) => {
       return res.send(csv);
     }
 
-    res.status(400).json({ error: "Invalid format. Only csv is supported." });
+    if (format === "excel") {
+      const ExcelJS = require("exceljs");
+
+      const workbook = new ExcelJS.Workbook();
+      const sheet = workbook.addWorksheet("Expenses");
+
+      sheet.columns = [
+        { header: "Date", key: "date", width: 14 },
+        { header: "Amount ($)", key: "amount", width: 12 },
+        { header: "Category", key: "category", width: 18 },
+        { header: "Payment Method", key: "payment_method", width: 18 },
+        { header: "Notes", key: "notes", width: 32 },
+      ];
+
+      sheet.getRow(1).font = { bold: true };
+      sheet.getRow(1).fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFE9E9E9" },
+      };
+
+      sheet.addRows(rows);
+
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      );
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=expenses.xlsx",
+      );
+      await workbook.xlsx.write(res);
+      return res.end();
+    }
+
+    res
+      .status(400)
+      .json({ error: "Invalid format. Only csv and excel are supported." });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
