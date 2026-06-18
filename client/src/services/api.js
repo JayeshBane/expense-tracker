@@ -1,6 +1,46 @@
 import axios from "axios";
 
+const TOKEN_KEY = "token";
+
 const client = axios.create({ baseURL: "/api" });
+
+// Attach the stored JWT to every request (including the blob export).
+client.interceptors.request.use((config) => {
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// On an expired/invalid token, clear it and let the app fall back to the login
+// screen. We skip this for /auth/* calls so a failed login doesn't trigger a
+// reload loop.
+client.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    const url = err.config?.url ?? "";
+    if (err.response?.status === 401 && !url.includes("/auth/")) {
+      localStorage.removeItem(TOKEN_KEY);
+      window.dispatchEvent(new Event("auth:logout"));
+    }
+    return Promise.reject(err);
+  },
+);
+
+export const login = (email, password) => {
+  return client
+    .post("/auth/login", { email, password })
+    .then((r) => r.data);
+};
+
+export const register = (data) => {
+  return client.post("/auth/register", data).then((r) => r.data);
+};
+
+export const getMe = () => {
+  return client.get("/auth/me").then((r) => r.data);
+};
 
 export const getExpenses = (p) => {
   return client.get("/expenses", { params: p }).then((r) => r.data);

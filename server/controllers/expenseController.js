@@ -7,6 +7,7 @@ const getExpenses = async (req, res) => {
 
     const expenses = await prisma.expense.findMany({
       where: {
+        userId: req.userId,
         ...(start || end
           ? {
               expenseDate: {
@@ -50,6 +51,7 @@ const createExpense = async (req, res) => {
         amount: parseFloat(amount),
         expenseDate: new Date(expenseDate),
         notes: notes ?? null,
+        user: { connect: { id: req.userId } },
         ...(categoryId && {
           category: { connect: { id: parseInt(categoryId) } },
         }),
@@ -75,6 +77,15 @@ const updateExpense = async (req, res) => {
     const id = parseInt(req.params.id);
     const { amount, expenseDate, categoryId, paymentMethodId, notes } =
       req.body;
+
+    // Ensure the expense belongs to the requesting user before mutating it.
+    const owned = await prisma.expense.findFirst({
+      where: { id, userId: req.userId },
+      select: { id: true },
+    });
+    if (!owned) {
+      return res.status(404).json({ error: "Expense not found" });
+    }
 
     const expense = await prisma.expense.update({
       where: { id },
@@ -110,7 +121,15 @@ const deleteExpense = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
-    await prisma.expense.delete({ where: { id } });
+    // Scope the delete to the owner; deleteMany lets us check the count so one
+    // user can't delete another user's expense by guessing its id.
+    const { count } = await prisma.expense.deleteMany({
+      where: { id, userId: req.userId },
+    });
+
+    if (count === 0) {
+      return res.status(404).json({ error: "Expense not found" });
+    }
 
     res.status(204).send();
   } catch (err) {
@@ -134,6 +153,7 @@ const exportExpenses = async (req, res) => {
 
     const expenses = await prisma.expense.findMany({
       where: {
+        userId: req.userId,
         ...(start || end
           ? {
               expenseDate: {

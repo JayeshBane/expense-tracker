@@ -16,7 +16,8 @@ const getBarData = async (req, res) => {
         TO_CHAR(expense_date, 'YYYY-MM-DD') AS date,
         SUM(amount)::FLOAT                  AS total
       FROM expenses
-      WHERE expense_date BETWEEN ${new Date(start)} AND ${new Date(end)}
+      WHERE user_id = ${req.userId}
+        AND expense_date BETWEEN ${new Date(start)} AND ${new Date(end)}
       GROUP BY expense_date
       ORDER BY expense_date ASC
     `;
@@ -38,7 +39,8 @@ const getLineData = async (req, res) => {
         DATE_TRUNC('month', expense_date)                       AS month_date,
         SUM(amount)::FLOAT                                      AS total
       FROM expenses
-      WHERE expense_date >= DATE_TRUNC('month', NOW()) - ${months} * INTERVAL '1 month'
+      WHERE user_id = ${req.userId}
+        AND expense_date >= DATE_TRUNC('month', NOW()) - ${months} * INTERVAL '1 month'
       GROUP BY DATE_TRUNC('month', expense_date)
       ORDER BY month_date ASC
     `;
@@ -67,7 +69,8 @@ const getPieData = async (req, res) => {
         SUM(e.amount)::FLOAT              AS total
       FROM expenses e
       LEFT JOIN categories c ON e.category_id = c.id
-      WHERE e.expense_date BETWEEN ${new Date(start)} AND ${new Date(end)}
+      WHERE e.user_id = ${req.userId}
+        AND e.expense_date BETWEEN ${new Date(start)} AND ${new Date(end)}
       GROUP BY c.name, c.color
       ORDER BY total DESC
     `;

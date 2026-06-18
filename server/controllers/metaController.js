@@ -4,6 +4,7 @@ const prisma = require("../db/prisma");
 const getCategories = async (req, res) => {
   try {
     const categories = await prisma.category.findMany({
+      where: { userId: req.userId },
       orderBy: { name: "asc" },
     });
 
@@ -22,9 +23,12 @@ const createCategory = async (req, res) => {
       return res.status(400).json({ error: "name is required" });
     }
 
-    // Case-insensitive duplicate check
+    // Case-insensitive duplicate check, scoped to this user
     const existing = await prisma.category.findFirst({
-      where: { name: { equals: name.trim(), mode: "insensitive" } },
+      where: {
+        userId: req.userId,
+        name: { equals: name.trim(), mode: "insensitive" },
+      },
     });
 
     if (existing) {
@@ -35,6 +39,7 @@ const createCategory = async (req, res) => {
       data: {
         name: name.trim(),
         color: color ?? "#ddd",
+        user: { connect: { id: req.userId } },
       },
     });
 
@@ -49,6 +54,14 @@ const updateCategory = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const { name, color } = req.body;
+
+    const owned = await prisma.category.findFirst({
+      where: { id, userId: req.userId },
+      select: { id: true },
+    });
+    if (!owned) {
+      return res.status(404).json({ error: "Category not found" });
+    }
 
     const category = await prisma.category.update({
       where: { id },
@@ -72,9 +85,17 @@ const deleteCategory = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
-    // Null out categoryId on related expenses before deleting
+    const owned = await prisma.category.findFirst({
+      where: { id, userId: req.userId },
+      select: { id: true },
+    });
+    if (!owned) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    // Null out categoryId on the user's related expenses before deleting
     await prisma.expense.updateMany({
-      where: { categoryId: id },
+      where: { categoryId: id, userId: req.userId },
       data: { categoryId: null },
     });
 
@@ -93,6 +114,7 @@ const deleteCategory = async (req, res) => {
 const getPaymentMethods = async (req, res) => {
   try {
     const methods = await prisma.paymentMethod.findMany({
+      where: { userId: req.userId },
       orderBy: { name: "asc" },
     });
     res.json(methods);
@@ -111,14 +133,17 @@ const createPaymentMethod = async (req, res) => {
     }
 
     const existing = await prisma.paymentMethod.findFirst({
-      where: { name: { equals: name.trim(), mode: "insensitive" } },
+      where: {
+        userId: req.userId,
+        name: { equals: name.trim(), mode: "insensitive" },
+      },
     });
     if (existing) {
       return res.status(409).json({ error: "Payment method already exists" });
     }
 
     const method = await prisma.paymentMethod.create({
-      data: { name: name.trim() },
+      data: { name: name.trim(), user: { connect: { id: req.userId } } },
     });
 
     res.status(201).json(method);
@@ -132,6 +157,14 @@ const updatePaymentMethod = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const { name } = req.body;
+
+    const owned = await prisma.paymentMethod.findFirst({
+      where: { id, userId: req.userId },
+      select: { id: true },
+    });
+    if (!owned) {
+      return res.status(404).json({ error: "Payment method not found" });
+    }
 
     const method = await prisma.paymentMethod.update({
       where: { id },
@@ -152,9 +185,17 @@ const deletePaymentMethod = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
-    // Null out paymentMethodId on related expenses before deleting
+    const owned = await prisma.paymentMethod.findFirst({
+      where: { id, userId: req.userId },
+      select: { id: true },
+    });
+    if (!owned) {
+      return res.status(404).json({ error: "Payment method not found" });
+    }
+
+    // Null out paymentMethodId on the user's related expenses before deleting
     await prisma.expense.updateMany({
-      where: { paymentMethodId: id },
+      where: { paymentMethodId: id, userId: req.userId },
       data: { paymentMethodId: null },
     });
 

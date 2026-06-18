@@ -12,20 +12,39 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id             Int             @id @default(autoincrement())
+  email          String          @unique @db.VarChar(255)
+  passwordHash   String          @map("password_hash")
+  name           String?         @db.VarChar(100)
+  createdAt      DateTime        @default(now()) @map("created_at")
+  expenses       Expense[]
+  categories     Category[]
+  paymentMethods PaymentMethod[]
+
+  @@map("users")
+}
+
 model Category {
   id       Int       @id @default(autoincrement())
   name     String    @db.VarChar(50)
   color    String?   @db.VarChar(7)
+  userId   Int       @map("user_id")
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   expenses Expense[]
 
+  @@index([userId])
   @@map("categories")
 }
 
 model PaymentMethod {
   id       Int       @id @default(autoincrement())
   name     String    @db.VarChar(50)
+  userId   Int       @map("user_id")
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   expenses Expense[]
 
+  @@index([userId])
   @@map("payment_methods")
 }
 
@@ -36,12 +55,15 @@ model Expense {
   notes           String?
   categoryId      Int?           @map("category_id")
   paymentMethodId Int?           @map("payment_method_id")
+  userId          Int            @map("user_id")
   category        Category?      @relation(fields: [categoryId], references: [id], map: "expenses_category_id_fkey")
   paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id], map: "expenses_payment_method_id_fkey")
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt       DateTime       @default(now()) @map("created_at")
   updatedAt       DateTime       @default(now()) @map("updated_at")
 
   @@index([expenseDate])
   @@index([categoryId])
+  @@index([userId])
   @@map("expenses")
 }

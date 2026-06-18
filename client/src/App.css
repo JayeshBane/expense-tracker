@@ -40,6 +40,23 @@
   gap: 8px;
   align-items: center;
 }
+.user-email {
+  font-size: 13px;
+  color: #7a766e;
+}
+.logout-button {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 7px 12px;
+  border: 1px solid #ddd9d1;
+  border-radius: 8px;
+  background: #fff;
+  color: #4a4740;
+  cursor: pointer;
+}
+.logout-button:hover {
+  background: #f1efe9;
+}
 
 .app-main {
   display: flex;
